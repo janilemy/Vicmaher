@@ -1,0 +1,9 @@
+﻿{
+  "ConnectionString": {
+    "Host": "localhost",
+    "Port": "",
+    "DbName": "",
+    "User": "",
+    "Password": ""
+  }
+}
