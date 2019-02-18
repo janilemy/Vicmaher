@@ -60,7 +60,11 @@ namespace Vicmaher.Web
 
                 if (env.IsDevelopment())
                 {
+                    // Run react development server in background automatically
                     spa.UseReactDevelopmentServer(npmScript: "start");
+
+                    // Run react development server as standalone process and connect it from application (run npm start in ClientApp directory)
+                    // spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                 }
             });
         }
