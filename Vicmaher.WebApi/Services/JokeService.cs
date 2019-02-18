@@ -14,14 +14,10 @@ namespace Vicmaher.WebApi.Services
     public class JokeService : IJokeService
     {
         private readonly IUnitOfWorkProvider _unitOfWorkProvider;
-        private readonly ILogger<JokeService> _logger;
 
-        public JokeService(
-            IUnitOfWorkProvider unitOfWorkProvider,
-            ILogger<JokeService> logger)
+        public JokeService(IUnitOfWorkProvider unitOfWorkProvider)
         {
             _unitOfWorkProvider = unitOfWorkProvider ?? throw new ArgumentNullException(nameof(unitOfWorkProvider));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<IEnumerable<Joke>> GetAllJokesAsync()

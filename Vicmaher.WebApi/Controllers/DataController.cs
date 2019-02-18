@@ -31,14 +31,15 @@ namespace Vicmaher.WebServices.Controllers
         /// </exception>
         public DataController(
             ILogger<DataController> logger,
-            JokeService jokeService,
-            CategoryService categoryService) : base(logger)
+            IJokeService jokeService,
+            ICategoryService categoryService) : base(logger)
         {
             _jokeService = jokeService ?? throw new ArgumentNullException(nameof(jokeService));
             _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
         }
 
         [HttpGet]
+        [Route("getJokes")]
         public async Task<IActionResult> GetJokes()
         {
             var jokes = await _jokeService.GetAllJokesAsync();
@@ -46,6 +47,7 @@ namespace Vicmaher.WebServices.Controllers
         }
 
         [HttpGet]
+        [Route("getJokesByCategoryId")]
         public async Task<IActionResult> GetJokesByCategoryId(int id)
         {
             var jokes = await _jokeService.GetAllJokesByCategoryIdAsync(id);
@@ -53,6 +55,7 @@ namespace Vicmaher.WebServices.Controllers
         }
 
         [HttpGet]
+        [Route("getCategories")]
         public async Task<IActionResult> GetCategories()
         {
             var categories = await _categoryService.GetAllCategoriesAsync();

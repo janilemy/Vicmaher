@@ -11,14 +11,10 @@ namespace Vicmaher.WebApi.Services
     public class CategoryService : ICategoryService
     {
         private readonly IUnitOfWorkProvider _unitOfWorkProvider;
-        private readonly ILogger<CategoryService> _logger;
 
-        public CategoryService(
-            IUnitOfWorkProvider unitOfWorkProvider,
-            ILogger<CategoryService> logger)
+        public CategoryService(IUnitOfWorkProvider unitOfWorkProvider)
         {
             _unitOfWorkProvider = unitOfWorkProvider ?? throw new ArgumentNullException(nameof(unitOfWorkProvider));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()

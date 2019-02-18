@@ -1,26 +1,115 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import request from "superagent";
 
 export class Home extends Component {
-  static displayName = Home.name;
+    static displayName = Home.name;
 
-  render () {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
-    );
-  }
+    constructor(props) {
+        super(props);
+
+        // Sets up our initial state
+        this.state = {
+            error: false,
+            hasMore: true,
+            isLoading: false,
+            jokes: [],
+        };
+
+        // Binds our scroll event handler
+        window.onscroll = () => {
+            const {
+                loadJokes,
+                state: {
+                    error,
+                    isLoading,
+                    hasMore
+                },
+            } = this;
+
+            // if there's an error
+            // it's already loading
+            // there's nothing left to load
+            if (error || isLoading || !hasMore) return;
+
+            // Checks that the page has scrolled to the bottom
+            if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+                loadJokes();
+            }
+        };
+    }
+
+    componentWillMount() {
+        // Loads initial jokes
+        this.loadJokes();
+    }
+
+    loadJokes = () => {
+        this.setState({ isLoading: true }, () => {
+            request
+                .get('https://localhost:5001/api/data/getJokes')
+                .then((results) => {
+                    const nextJokes = results.body.map(joke => ({
+                        id: joke.id,
+                        title: joke.title,
+                        description: joke.description
+                    }));
+
+                    // Merge the next jokes into our existing jokes list
+                    this.setState({
+                        hasMore: (this.state.jokes.length < 100),
+                        isLoading: false,
+                        jokes: [
+                            ...this.state.jokes,
+                            ...nextJokes,
+                        ],
+                    });
+                })
+                .catch((err) => {
+                    this.setState({
+                        error: err.message,
+                        isLoading: false,
+                    });
+                })
+        });
+    }
+
+    render() {
+        const {
+            error,
+            hasMore,
+            isLoading,
+            jokes,
+        } = this.state;
+
+        return (
+            <div>
+                <h1>Vicmaher</h1>
+                {jokes.map(joke => (
+                    <Fragment key={joke.id}>
+                        <hr />
+                        <div style={{ display: 'flex' }}>
+                            <div>
+                                <h3 style={{ marginTop: 0 }}>
+                                    @{joke.title}
+                                </h3>
+                                <p>{joke.description}</p>
+                            </div>
+                        </div>
+                        <hr />
+                    </Fragment>
+                ))}
+                {error &&
+                    <div style={{ color: '#900' }}>
+                        {error}
+                    </div>
+                }
+                {isLoading &&
+                    <div>Nalaganje...</div>
+                }
+                {!hasMore &&
+                    <div>Trenutno ni drugih vicev na to temo.</div>
+                }
+            </div>
+        );
+    }
 }
