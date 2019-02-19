@@ -1,4 +1,5 @@
 ﻿using Platform.DAL.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Vicmaher.WebServices.Entities
 {
@@ -25,6 +26,10 @@ namespace Vicmaher.WebServices.Entities
         /// <value>
         /// Joke Category.
         /// </value>
+        ///
+
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
 
         public Category Category { get; set; }
     }

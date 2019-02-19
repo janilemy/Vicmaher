@@ -1,9 +1,9 @@
 ﻿div#multi_column {
     width: 100%;
     margin: 0px auto;
-    -webkit-columns: 5 220px;
-    -moz-columns: 5 220px;
-    columns: 5 220px;
+    -webkit-columns: 4 200px;
+    -moz-columns: 4 200px;
+    columns: 4 200px;
 }
 
     div#multi_column > div {
