@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Platform.DAL.Paging;
 using Platform.DAL.Query;
 using Platform.DAL.UnitOfWork.Interfaces;
 using System;
@@ -14,10 +15,14 @@ namespace Vicmaher.WebApi.Services
     public class JokeService : IJokeService
     {
         private readonly IUnitOfWorkProvider _unitOfWorkProvider;
+        private readonly IDataPager<Joke> _pager;
 
-        public JokeService(IUnitOfWorkProvider unitOfWorkProvider)
+        public JokeService(
+            IUnitOfWorkProvider unitOfWorkProvider,
+            IDataPager<Joke> pager)
         {
             _unitOfWorkProvider = unitOfWorkProvider ?? throw new ArgumentNullException(nameof(unitOfWorkProvider));
+            _pager = pager ?? throw new ArgumentNullException(nameof(pager));
         }
 
         public async Task<IEnumerable<Joke>> GetAllJokesAsync()
@@ -27,6 +32,12 @@ namespace Vicmaher.WebApi.Services
                 var repository = uow.GetRepository<Joke>();
                 return await repository.GetAllAsync(null);
             }
+        }
+
+        public async Task<DataPage<Joke>> GetAllJokesAsync(int pageNumber, int pageLength)
+        {
+            var jokes = await _pager.GetAsync(pageNumber, pageLength);
+            return jokes;
         }
 
         public async Task<IEnumerable<Joke>> GetAllJokesByCategoryIdAsync(int categoryId)

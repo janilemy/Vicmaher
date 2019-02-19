@@ -1,0 +1,34 @@
+﻿div#multi_column {
+    width: 100%;
+    margin: 0px auto;
+    -webkit-columns: 5 220px;
+    -moz-columns: 5 220px;
+    columns: 5 220px;
+}
+
+    div#multi_column > div {
+        margin-bottom: 20px;
+        padding: 16px;
+        border: #000 1px solid;
+        /* Chrome, Safari */
+        -webkit-column-break-inside: avoid;
+        /* Theoretically FF 20+ */
+        page-break-inside: avoid;
+        /* IE 11 */
+        break-inside: avoid-column;
+        display: table;
+
+        border: 1px solid #dedede;
+        border-top: 3px solid #f89846;
+        background-color: #ffffff;
+        cursor: pointer;
+        border-radius: 0.2em;
+    }
+
+        div#multi_column > div:nth-child(2n+0) {
+            border-top: 3px solid #e15340;
+        }
+
+        div#multi_column > div:nth-child(2n+1) {
+            border-top: 3px solid #48b4ce;
+        }

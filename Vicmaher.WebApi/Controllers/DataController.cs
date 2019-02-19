@@ -39,10 +39,11 @@ namespace Vicmaher.WebServices.Controllers
         }
 
         [HttpGet]
-        [Route("getJokes")]
-        public async Task<IActionResult> GetJokes()
+        [Route("getJokes/{pageNumber}/{pageLength}")]
+        public async Task<IActionResult> GetJokes(int pageNumber, int pageLength)
         {
-            var jokes = await _jokeService.GetAllJokesAsync();
+            var jokes = await _jokeService.GetAllJokesAsync(pageNumber, pageLength);
+            //var jokes = await _jokeService.GetAllJokesAsync();
             return Ok(jokes);
         }
 
