@@ -14,7 +14,7 @@ export class Home extends Component {
             hasMore: true,
             isLoading: false,
             pageNumber: 1,
-            pageLenght: 10,
+            pageLenght: 20,
             jokes: [],
         };
 
@@ -62,7 +62,7 @@ export class Home extends Component {
 
                     // Merge the next jokes into our existing jokes list
                     this.setState({
-                        hasMore: (this.state.jokes.length < 100),
+                        hasMore: (values.totalEntityCount > pageNumber * pageLenght),
                         isLoading: false,
                         pageNumber: pageNumber + 1,
                         pageLenght: pageLenght,

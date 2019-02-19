@@ -1,4 +1,11 @@
-﻿div#multi_column {
+﻿body {
+    background: #f6f6f6;
+    font-size: 100%;
+    font-family: Century Gothic, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+div#multi_column {
     width: 100%;
     margin: 0px auto;
     -webkit-columns: 4 200px;
